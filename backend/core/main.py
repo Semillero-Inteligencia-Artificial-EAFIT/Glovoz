@@ -10,5 +10,6 @@ class webpage():
   @app.route('/api/receive_data', methods=['POST'])
   def receive_data():
     data = request.json
+    #new_data=tanslate(data)#later you will code send in the return 
     print(data)
     return jsonify({"message": "Data received successfully!"})
