@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import axios from 'axios';
 
 const App = () => {
@@ -12,6 +12,12 @@ const App = () => {
   };
 
   useEffect(() => {
+    // Recive data from backed and print it in console
+    fetch("/api/receive_data").then(response=>{
+      if(response.ok){
+        return response.json()
+      }
+    }).then(data=>console.log(data))
     // Call the function to send data to Flask when the component mounts
     const dataToSend = {
       langue: 'es',

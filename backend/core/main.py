@@ -12,4 +12,5 @@ class webpage():
     data = request.json
     #new_data=tanslate(data)#later you will code send in the return 
     print(data)
+    #in frontend in console you will obtein "Data received successfully!"
     return jsonify({"message": "Data received successfully!"})
