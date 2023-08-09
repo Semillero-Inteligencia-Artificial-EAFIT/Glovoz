@@ -11,9 +11,10 @@ import Button from "./Button";
 import { Play } from "./icons/Play";
 import { Stop } from "./icons/Stop";
 import { Navigate } from "react-router-dom";
+import axios from "axios";
 
 const Main = styled.main`
-  height: 57vh;
+  height: 68vh;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
@@ -24,6 +25,9 @@ const Main = styled.main`
   @media screen and (max-width: 320px) {
     height: 68vh;
   }
+  @media screen and (min-height: 900px) {
+    height: 70vh;
+  }
 `;
 
 const FormContainer = styled.div`
@@ -31,7 +35,7 @@ const FormContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
-  height: 7vh;
+  height: 8vh;
   background-color: #fff;
   bottom: 0;
   padding: 20px 0;
@@ -149,7 +153,7 @@ export default function ChatRoom() {
 
   const sendMessage = async (transcript) => {
     const { uid, photoURL } = user;
-    const data = {
+    let data = {
       text: transcript,
       lang,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -158,6 +162,17 @@ export default function ChatRoom() {
     };
     await addDoc(messagesRef, data);
     dummy.current.scrollIntoView({ behavior: "smooth" });
+    data = {
+      text: transcript,
+      language: lang,
+      uid,
+    };
+    try {
+      const response = await axios.post("/api/receive_data", data);
+      console.log(response.data.message);
+    } catch (error) {
+      console.error("Error sending data to Flask:", error);
+    }
   };
 
   useEffect(() => {
