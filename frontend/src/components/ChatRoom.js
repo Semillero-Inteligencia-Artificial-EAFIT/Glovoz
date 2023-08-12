@@ -136,16 +136,24 @@ export default function ChatRoom() {
       const lastMessageDate = lastMessage?.createdAt?.seconds || 0;
       const currentDate = new Date().getTime() / 1000;
       const messageDif = currentDate - lastMessageDate;
-      console.log({ messageDif });
       if (messageDif && messageDif < 6) {
-        console.log("entra 1");
         if (messagesLength < messages.length && lastMessage.uid !== user.uid) {
-          console.log({ messagesLength, originalLength: messages.length });
-          const u = new SpeechSynthesisUtterance(lastMessage.text);
-          u.lang = lastMessage.lang;
-          synth.speak(u);
+          const data = {
+            text: lastMessage.text,
+            lang: lastMessage.lang,
+            targetLang: lang,
+          };
+          try {
+            axios.post("/api/receive_data", data).then((res) => {
+              //hablar mensaje traducido
+              const u = new SpeechSynthesisUtterance(lastMessage.text);
+              u.lang = lastMessage.lang;
+              synth.speak(u);
+            });
+          } catch (error) {
+            console.error("Error sending data to Flask:", error);
+          }
           setMessagesLength(messages.length);
-          console.log({ messagesLength, originalLength: messages.length });
         }
       }
     }
@@ -162,17 +170,6 @@ export default function ChatRoom() {
     };
     await addDoc(messagesRef, data);
     dummy.current.scrollIntoView({ behavior: "smooth" });
-    data = {
-      text: transcript,
-      language: lang,
-      uid,
-    };
-    try {
-      const response = await axios.post("/api/receive_data", data);
-      console.log(response.data.message);
-    } catch (error) {
-      console.error("Error sending data to Flask:", error);
-    }
   };
 
   useEffect(() => {
