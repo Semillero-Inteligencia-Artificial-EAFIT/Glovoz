@@ -149,8 +149,8 @@ export default function ChatRoom() {
           try {
             axios.post("/api/receive_data", data).then((res) => {
               //hablar mensaje traducido
-              const u = new SpeechSynthesisUtterance(lastMessage.text);
-              u.lang = lastMessage.lang;
+              const u = new SpeechSynthesisUtterance(res.data.message);
+              u.lang = lang;
               synth.speak(u);
             });
           } catch (error) {
