@@ -28,6 +28,9 @@ const Main = styled.main`
   @media screen and (min-height: 900px) {
     height: 70vh;
   }
+  @media screen and (min-height: 500px) {
+    height: 55vh;
+  }
 `;
 
 const FormContainer = styled.div`
