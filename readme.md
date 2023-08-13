@@ -47,12 +47,18 @@ By combining cutting-edge technologies like TensorFlow for language models and F
 
 ### How we down complexity and amount of translation models 
 
+if we want do a translator with 100 of langues using methot 1 will need train models 9900 , but we can use methot 2 and the amount will decrease a lot , we only need 200 train models.
+
+### Methot 1
+
 We think to make a model for each langue translation, like 
 
     English to Portuges
     English to Spanish 
     Portuges to Spanish
+    Portuges to English
     Spanish to Portuges
+    Spanish to English
 
 is very computationally very expensive because it need ```K*(K-1)``` models for K langue
 
@@ -60,9 +66,16 @@ is very computationally very expensive because it need ```K*(K-1)``` models for 
 
 ![Our math intuition](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/PrimusChat/main/doc/images/2.png)
 
-we propuse a new methot for down complexity using a middle man, this middle man is a commun langue , we going to use english because is a very commun langue for all people. we have to send or text to our middle man will translate to the destiny , this technic will down complexity(amount of models) from ```K*(K-1)``` To ```2K```
+The nodes of the graph are the langues and the edges are the translations in 2 ways
+
+### Methot 2
+
+We propuse a new methot for down complexity using a middle man, this middle man is a commun langue , we going to use english because is a very commun langue for all people. we have to send or text to our middle man will translate to the destiny , this technic will down complexity(amount of models) from ```K*(K-1)``` To ```2K```
 
 ![Our technic](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/PrimusChat/main/doc/images/3.png)
+
+The Same nodes of the graph are the langues and the edges are the translations in 2 ways, you see the number of edges decrease
+
 
 ### License
 
