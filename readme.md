@@ -56,13 +56,13 @@ We think to make a model for each langue translation, like
 
 is very computationally very expensive because it need ```K*(K-1)``` models for K langue
 
-![langue models complexity]()
+![langue models complexity](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/PrimusChat/main/doc/images/1.png)
 
-![Our math intuition]()
+![Our math intuition](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/PrimusChat/main/doc/images/2.png)
 
 we propuse a new methot for down complexity using a middle man, this middle man is a commun langue , we going to use english because is a very commun langue for all people. we have to send or text to our middle man will translate to the destiny , this technic will down complexity(amount of models) from ```K*(K-1)``` To ```2K```
 
-![Our technic]()
+![Our technic](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/PrimusChat/main/doc/images/3.png)
 
 ### License
 
