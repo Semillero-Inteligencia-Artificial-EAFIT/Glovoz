@@ -18,3 +18,4 @@ class webpage():
     data= webTranslate(data["text"],data["lang"][:2],data["targetLang"][:2])
     #in frontend in console you will obtein "Data received successfully!"
     return jsonify({"message": data})
+

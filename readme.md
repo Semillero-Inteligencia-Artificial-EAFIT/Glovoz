@@ -33,6 +33,7 @@ This project is a voice-to-voice translator app built using React, Chrome plugin
 **Run react:**
 
     cd PrimusChat/frontend
+    npm install
     npm start run dev
 
 
@@ -44,6 +45,24 @@ In today's interconnected world, language barriers often act as significant road
 
 By combining cutting-edge technologies like TensorFlow for language models and Flask for backend processing, our translator significantly reduces the number of required language models, making it more efficient and responsive. This breakthrough not only enhances the user experience but also optimizes resource utilization. Now, users can seamlessly converse in their native languages while receiving real-time translations in English, enabling them to connect with others globally, regardless of language differences. This translator empowers individuals, businesses, and communities alike, fostering cross-cultural understanding and breaking down the barriers that once stood in the way of meaningful interaction and cooperation. With this powerful tool at their disposal, people from all walks of life can embark on a journey of discovery, opening doors to new opportunities, knowledge, and empathy across linguistic borders.
 
+### How we down complexity and amount of translation models 
+
+We think to make a model for each langue translation, like 
+
+    English to Portuges
+    English to Spanish 
+    Portuges to Spanish
+    Spanish to Portuges
+
+is very computationally very expensive because it need ```K*(K-1)``` models for K langue
+
+![langue models complexity]()
+
+![Our math intuition]()
+
+we propuse a new methot for down complexity using a middle man, this middle man is a commun langue , we going to use english because is a very commun langue for all people. we have to send or text to our middle man will translate to the destiny , this technic will down complexity(amount of models) from ```K*(K-1)``` To ```2K```
+
+![Our technic]()
 
 ### License
 
