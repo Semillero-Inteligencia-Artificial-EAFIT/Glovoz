@@ -132,31 +132,52 @@ export default function ChatRoom() {
   const [goBack, setGoBack] = useState(false);
   const [lang, setLang] = useState("es-CO");
   const [messagesLength, setMessagesLength] = useState(0);
+  const [translatedMessages, setTranslatedMessages] = useState([]);
 
   useEffect(() => {
     if (messages) {
-      const lastMessage = messages[messages.length - 1];
-      const lastMessageDate = lastMessage?.createdAt?.seconds || 0;
-      const currentDate = new Date().getTime() / 1000;
-      const messageDif = currentDate - lastMessageDate;
-      if (messageDif && messageDif < 6) {
-        if (messagesLength < messages.length && lastMessage.uid !== user.uid) {
-          const data = {
-            text: lastMessage.text,
-            lang: lastMessage.lang,
-            targetLang: lang,
-          };
-          try {
-            axios.post("/api/receive_data", data).then((res) => {
-              //hablar mensaje traducido
-              const u = new SpeechSynthesisUtterance(res.data.message);
+      if (translatedMessages.length === 0) {
+        setTranslatedMessages([...messages]);
+      } else if (translatedMessages.length < messages.length) {
+        const lastMessage = messages[messages.length - 1];
+        const lastMessageDate = lastMessage?.createdAt?.seconds || 0;
+        const currentDate = new Date().getTime() / 1000;
+        const messageDif = currentDate - lastMessageDate;
+        if (messageDif && messageDif < 6) {
+          if (
+            messagesLength < messages.length &&
+            lastMessage.uid !== user.uid
+          ) {
+            if (lastMessage.lang !== lang) {
+              const data = {
+                text: lastMessage.text,
+                lang: lastMessage.lang,
+                targetLang: lang,
+              };
+              try {
+                axios.post("/api/receive_data", data).then((res) => {
+                  //hablar mensaje traducido
+                  const u = new SpeechSynthesisUtterance(res.data.message);
+                  u.lang = lang;
+                  synth.speak(u);
+                  setTranslatedMessages((prev) => [
+                    ...prev,
+                    { ...lastMessage, text: res.data.message },
+                  ]);
+                });
+              } catch (error) {
+                console.error("Error sending data to Flask:", error);
+              }
+            } else {
+              const u = new SpeechSynthesisUtterance(lastMessage.text);
               u.lang = lang;
               synth.speak(u);
-            });
-          } catch (error) {
-            console.error("Error sending data to Flask:", error);
+              setTranslatedMessages((prev) => [...prev, lastMessage]);
+            }
+            setMessagesLength(messages.length);
+          } else if (lastMessage.uid === user.uid) {
+            setTranslatedMessages((prev) => [...prev, lastMessage]);
           }
-          setMessagesLength(messages.length);
         }
       }
     }
@@ -223,8 +244,8 @@ export default function ChatRoom() {
         <RoomName>{roomId}</RoomName>
       </ChatHeader>
       <Main>
-        {messages &&
-          messages.map((msg, index) => (
+        {translatedMessages.length > 0 &&
+          translatedMessages.map((msg, index) => (
             <ChatMessage key={index} message={msg} auth={auth} />
           ))}
         <div ref={dummy}></div>

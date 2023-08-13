@@ -1,4 +1,5 @@
 import { css, styled } from "styled-components";
+import { flags } from "../lib/languages";
 
 const Message = styled.div`
   display: flex;
@@ -47,9 +48,22 @@ const Message = styled.div`
   }
 `;
 
+const ImageContainer = styled.div`
+  position: relative;
+`;
+
+const Flag = styled.div`
+  position: absolute;
+  font-size: 12px;
+  bottom: -6px;
+  padding: 4px;
+  border-radius: 50%;
+  background: #ccc;
+`;
+
 export default function ChatMessage(props) {
   const { auth, message } = props;
-  const { text, uid, photoURL } = message;
+  const { text, uid, photoURL, lang } = message;
   let messageclass = uid === auth?.currentUser?.uid ? "sent" : "received";
   if (uid === "chatBot") messageclass = "chatBot";
   if (!auth.currentUser) {
@@ -57,7 +71,10 @@ export default function ChatMessage(props) {
   }
   return (
     <Message messageclass={messageclass}>
-      <img src={photoURL} />
+      <ImageContainer>
+        <img src={photoURL} />
+        <Flag>{flags[lang]}</Flag>
+      </ImageContainer>
       <p>{text}</p>
     </Message>
   );
