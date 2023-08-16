@@ -25,15 +25,20 @@ This project is a voice-to-voice translator app built using React, Chrome plugin
 
 ### Run 
 
-**Run flask:**
+**install flask :**
 
     cd PrimusChat/backend
+    pip install -r requieriments.txt
+
+**Excute python backend in another terimanl:**
     python PrimusChat.py
 
-**Run react:**
+**install react :**
 
     cd PrimusChat/frontend
     npm install
+
+**Excute javascript frontend in another terimanl:**
     npm start run dev
 
 
