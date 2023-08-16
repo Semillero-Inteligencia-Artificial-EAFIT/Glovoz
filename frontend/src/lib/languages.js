@@ -9,6 +9,7 @@ export const languages = {
   "Português 🇧🇷": "pt-BR",
   "Deutsch 🇩🇪": "de",
   "Русский 🇷🇺": "ru",
+  "Français 🇫🇷": "fr",
 };
 
 export const flags = {
@@ -20,6 +21,7 @@ export const flags = {
   "es-MX": "🇲🇽",
   "pt-PT": "🇵🇹",
   "pt-BR": "🇧🇷",
+  fr: "🇫🇷",
   de: "🇩🇪",
   ru: "🇷🇺",
 };
