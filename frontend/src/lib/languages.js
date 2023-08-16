@@ -5,11 +5,11 @@ export const languages = {
   "Español 🇪🇸": "es-ES",
   "Español 🇨🇴": "es-CO",
   "Español 🇲🇽": "es-MX",
-  "Português 🇵🇹": "pt-PT",
-  "Português 🇧🇷": "pt-BR",
   "Deutsch 🇩🇪": "de",
-  "Русский 🇷🇺": "ru",
   "Français 🇫🇷": "fr",
+  "Português 🇧🇷": "pt-BR",
+  "Português 🇵🇹": "pt-PT",
+  "Русский 🇷🇺": "ru",
 };
 
 export const flags = {

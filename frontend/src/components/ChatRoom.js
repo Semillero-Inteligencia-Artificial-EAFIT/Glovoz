@@ -1,18 +1,19 @@
-import { useRef, useState, useEffect } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { auth, db } from "../lib/firebase";
 import firebase from "firebase/compat/app";
-import ChatMessage from "./ChatMessage";
-import { languages } from "../lib/languages";
+import { auth, db } from "../lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { addDoc, collection, orderBy, query } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useRef, useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 import { styled } from "styled-components";
+import axios from "axios";
+import { languages } from "../lib/languages";
+import ChatMessage from "./ChatMessage";
 import Button from "./Button";
 import { Play } from "./icons/Play";
 import { Stop } from "./icons/Stop";
-import { Navigate } from "react-router-dom";
-import axios from "axios";
 
+// CSS utilizando styled-components
 const Main = styled.main`
   height: 68vh;
   overflow-y: scroll;
@@ -108,32 +109,53 @@ const Arrow = styled.div`
   }
 `;
 
+// Herramienta de chrome SpeechRecognition que nos permite
+// hacer la transcripción
 const SpeechRecognition =
   window.SpeechRecognition ||
   window.webkitSpeechRecognition ||
   window.SpeechRecognitionAlternative;
+
+// Nueva instancia de la herramienta
 const mic = new SpeechRecognition();
 
+// Que el input sea continuo, que no pare automaticamente
 mic.continious = true;
+
+// Entregue solamente el resultado final de la transcripción
 mic.interimResults = false;
+
+// Herramienta de chrome SpeechSynthesis que nos permite hacer
+// text-to-speech.
 const synth =
   window.speechSynthesis ||
   window.SpeechSynthesis ||
   window.webkitSpeechSynthesis;
 
+// Creamos el componente ChatRoom
 export default function ChatRoom() {
   const dummy = useRef();
   const [user] = useAuthState(auth) || auth.currentUser;
+
+  // Tomamos el id de la sala del link de la página
   const roomId = window.location.href.split("/").slice(-1)[0];
+
+  // Query a la base de datos (firestore)
   const messagesRef = collection(db, "rooms", roomId, "messages");
   const q = query(messagesRef, orderBy("createdAt"));
   const [messages] = useCollectionData(q, { idField: "id" });
+
+  // Variables de estado
   const [isListening, setIsListening] = useState(false);
   const [goBack, setGoBack] = useState(false);
   const [lang, setLang] = useState("es-CO");
   const [messagesLength, setMessagesLength] = useState(0);
   const [translatedMessages, setTranslatedMessages] = useState([]);
 
+  // Lenguaje del microfóno
+  mic.lang = lang;
+
+  // Traducir y hacer text-to-speech a los nuevos mensajes
   useEffect(() => {
     if (messages) {
       if (translatedMessages.length === 0) {
@@ -155,11 +177,14 @@ export default function ChatRoom() {
                 targetLang: lang,
               };
               try {
+                // LLamado al back para que traduzca el mensaje
                 axios.post("/api/receive_data", data).then((res) => {
-                  //hablar mensaje traducido
+                  // Text-to-speech del mensaje traducido
                   const u = new SpeechSynthesisUtterance(res.data.message);
                   u.lang = lang;
                   synth.speak(u);
+
+                  // Actualizar mensajes traducidos
                   setTranslatedMessages((prev) => [
                     ...prev,
                     { ...lastMessage, text: res.data.message },
@@ -169,13 +194,17 @@ export default function ChatRoom() {
                 console.error("Error sending data to Flask:", error);
               }
             } else {
+              // Text-to-speech mensaje en el mismo idioma
               const u = new SpeechSynthesisUtterance(lastMessage.text);
               u.lang = lang;
               synth.speak(u);
+
+              // Actualizar mensajes traducidos
               setTranslatedMessages((prev) => [...prev, lastMessage]);
             }
             setMessagesLength(messages.length);
           } else if (lastMessage.uid === user.uid) {
+            // Actualizar mensajes traducidos
             setTranslatedMessages((prev) => [...prev, lastMessage]);
           }
         }
@@ -183,23 +212,7 @@ export default function ChatRoom() {
     }
   }, [messages]);
 
-  const sendMessage = async (transcript) => {
-    const { uid, photoURL } = user;
-    let data = {
-      text: transcript,
-      lang,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      uid,
-      photoURL,
-    };
-    await addDoc(messagesRef, data);
-    dummy.current.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    mic.lang = lang;
-  }, [lang]);
-
+  // Controla input del microfono y resultado de transcripción
   useEffect(() => {
     if (isListening) {
       mic.start();
@@ -228,6 +241,20 @@ export default function ChatRoom() {
       };
     };
   }, [isListening]);
+
+  // Enviar mensajes a la base de datos
+  const sendMessage = async (transcript) => {
+    const { uid, photoURL } = user;
+    let data = {
+      text: transcript,
+      lang,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      uid,
+      photoURL,
+    };
+    await addDoc(messagesRef, data);
+    dummy.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <>

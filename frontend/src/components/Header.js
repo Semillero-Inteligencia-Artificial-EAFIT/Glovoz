@@ -3,8 +3,8 @@ import SignOut from "./SignOut";
 import { auth } from "../lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
 
+// CSS usando styled-components
 const HeaderContainer = styled.header`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;

@@ -1,8 +1,5 @@
-import { useState } from "react";
-import { auth, db } from "../lib/firebase";
 import firebase from "firebase/compat/app";
-import Button from "./Button";
-import Input from "./Input";
+import { auth, db } from "../lib/firebase";
 import {
   addDoc,
   arrayUnion,
@@ -13,10 +10,14 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { Container } from "./Layout";
+import Button from "./Button";
+import Input from "./Input";
 
+// CSS utilizando styled-components
 const RoomForm = styled.div`
   display: flex;
   flex-direction: column;
@@ -102,11 +103,15 @@ const SubTitle = styled.h1`
 
 export default function EnterRoom() {
   const [user] = useAuthState(auth);
+
+  // Estados del Form
   const [roomId, setRoomId] = useState("");
   const [roomPassword, setRoomPassword] = useState("");
   const [enterRoom, setEnterRoom] = useState(false);
-  const formattedUser = user.displayName.split(" ")[0];
   const [animate, setAnimate] = useState(false);
+
+  // Nombre de usuario en formato
+  const formattedUser = user.displayName.split(" ")[0];
 
   if (user === undefined || user === null)
     return <Navigate to="/" replace={true} />;
@@ -115,11 +120,16 @@ export default function EnterRoom() {
     return <Navigate to={`/room/${roomId}`} replace={true} />;
   }
 
+  // Entrar o crear una sala
   async function joinRoom() {
     const { uid } = user;
+
+    // Busca sala en base de datos
     const roomRef = doc(db, "rooms", roomId);
     const docSnap = await getDoc(roomRef);
     const roomData = docSnap.data();
+
+    // Si no existe la crea, si existe, redirije a la sala
     if (roomData === undefined) {
       const data = {
         id: roomId,
@@ -131,6 +141,7 @@ export default function EnterRoom() {
         text: `${user.displayName} has joined the chat!`,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         uid: "chatBot",
+        lang: "en",
       });
 
       await setDoc(roomRef, data);
@@ -145,6 +156,7 @@ export default function EnterRoom() {
             text: `${user.displayName} has joined the chat!`,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             uid: "chatBot",
+            lang: "en",
           });
         }
         setEnterRoom(true);
@@ -153,6 +165,7 @@ export default function EnterRoom() {
       }
     }
   }
+
   return (
     <Container>
       {enterRoom ? (
