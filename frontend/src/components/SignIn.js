@@ -9,6 +9,7 @@ const SignInContainer = styled.div`
   margin: 10px;
 `;
 
+// firebase authentication google signin
 export default function SignIn() {
   const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
