@@ -1,6 +1,6 @@
-import firebase from "firebase/compat/app";
 import { auth } from "../lib/firebase";
-import Button from "./Button";
+import firebase from "firebase/compat/app";
+import Button from "./styles/Button";
 import { styled } from "styled-components";
 
 const SignInContainer = styled.div`

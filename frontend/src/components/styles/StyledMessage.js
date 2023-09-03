@@ -1,8 +1,7 @@
 import { css, styled } from "styled-components";
-import { flags } from "../lib/languages";
 
 // CSS usando styled-components
-const Message = styled.div`
+export const Message = styled.div`
   display: flex;
   align-items: center;
   p {
@@ -49,11 +48,11 @@ const Message = styled.div`
   }
 `;
 
-const ImageContainer = styled.div`
+export const ImageContainer = styled.div`
   position: relative;
 `;
 
-const Flag = styled.div`
+export const Flag = styled.div`
   position: absolute;
   font-size: 12px;
   bottom: -6px;
@@ -61,29 +60,3 @@ const Flag = styled.div`
   border-radius: 50%;
   background: #ccc;
 `;
-
-export default function ChatMessage(props) {
-  const { auth, message } = props;
-  const { text, uid, photoURL, lang } = message;
-
-  // Verificamos si usuario inicio sesión
-  if (!auth.currentUser) {
-    return <></>;
-  }
-
-  // Verificamos si el mensaje lo envio el usuario y otra presona
-  let messageclass = uid === auth?.currentUser?.uid ? "sent" : "received";
-
-  // Verificamos si lo envio el bot
-  if (uid === "chatBot") messageclass = "chatBot";
-
-  return (
-    <Message messageclass={messageclass}>
-      <ImageContainer>
-        <img src={photoURL} />
-        {uid !== "chatBot" && <Flag>{flags[lang]}</Flag>}
-      </ImageContainer>
-      <p>{text}</p>
-    </Message>
-  );
-}

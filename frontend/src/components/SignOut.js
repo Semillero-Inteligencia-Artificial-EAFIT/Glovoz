@@ -1,10 +1,9 @@
-import { useAuthState } from "react-firebase-hooks/auth";
+// import { useGetUserQuery } from "../features/users/usersSlice";
 import { auth } from "../lib/firebase";
-import Button from "./Button";
+import Button from "./styles/Button";
 
-// firebase authentication signout
-export default function SignOut() {
-  const [user] = useAuthState(auth);
+export default function SignOut({ user }) {
+  //   const { data, isLoading, isSuccess, isError, error } = useGetUserQuery();
   function signOut() {
     auth?.signOut();
     window.location.href = "/";
