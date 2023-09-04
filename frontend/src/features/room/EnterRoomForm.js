@@ -56,7 +56,13 @@ const EnterRoomForm = (props) => {
         navigateToRoom();
       }
     } else {
+      const messageData = {
+        text: `${user.displayName} has created the room!`,
+        lang: "en",
+        uid: "chatBot",
+      };
       await addRoom({ roomId, password: roomPassword, uid: user.uid });
+      await addMessage({ roomId, data: messageData });
       navigateToRoom();
     }
   };

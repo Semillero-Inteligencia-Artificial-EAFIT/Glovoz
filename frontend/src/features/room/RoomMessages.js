@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { Main } from "../../components/styles/StyledRoom";
+import Loader from "../../components/Loader";
 import ChatMessage from "./ChatMessage";
 import axios from "axios";
 
@@ -97,7 +98,7 @@ const RoomMessages = (props) => {
   };
 
   let messages;
-  if (isLoading) messages = <p>Loading...</p>;
+  if (isLoading) messages = <Loader />;
   else if (isSuccess && data)
     messages = data.map((msg, index) => (
       <ChatMessage key={index} message={msg} userLang={lang} user={user} />
