@@ -30,7 +30,7 @@ This project is a voice-to-voice translator app built using React, Chrome plugin
     cd PrimusChat/backend
     pip install -r requieriments.txt
 
-**Excute python backend in another terimanl:**
+**Execute python backend in another terminal:**
     python PrimusChat.py
 
 **install react :**
@@ -38,13 +38,13 @@ This project is a voice-to-voice translator app built using React, Chrome plugin
     cd PrimusChat/frontend
     npm install
 
-**Excute javascript frontend in another terimanl:**
+**Execute javascript frontend in another terminal:**
     npm start run dev
 
 
 
 ### Made for:
-remove langues barriers
+remove languages barriers
 
 In today's interconnected world, language barriers often act as significant roadblocks to effective communication and understanding between individuals from diverse linguistic backgrounds. These barriers hinder collaboration, restrict access to vital information, and impede cultural exchange. However, the voice-to-voice translator we have developed using Chrome plugins, React, TensorFlow, and Flask offers a transformative solution to this age-old problem.
 
@@ -52,11 +52,11 @@ By combining cutting-edge technologies like TensorFlow for language models and F
 
 ### How we down complexity and amount of translation models 
 
-if we want do a translator with 100 of langues using methot 1 will need train models 9900 , but we can use methot 2 and the amount will decrease a lot , we only need 200 train models.
+if we want do a translator with 100 of languages using methotd 1 will need train models 9900 , but we can use methotd 2 and the amount will decrease a lot , we only need 200 train models.
 
-### Methot 1
+### Methotd 1
 
-We think to make a model for each langue translation, like 
+We think to make a model for each language translation, like 
 
     English to Portuges
     English to Spanish 
@@ -65,21 +65,21 @@ We think to make a model for each langue translation, like
     Spanish to Portuges
     Spanish to English
 
-is very computationally very expensive because it need ```K*(K-1)``` models for K langue
+is very computationally very expensive because it need ```K*(K-1)``` models for K language
 
-![langue models complexity](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/PrimusChat/main/doc/images/1.png)
+![Language models complexity](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/PrimusChat/main/doc/images/1.png)
 
 ![Our math intuition](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/PrimusChat/main/doc/images/2.png)
 
-The nodes of the graph are the langues and the edges are the translations in 2 ways
+The nodes of the graph are the languages and the edges are the translations in 2 ways
 
-### Methot 2
+### Methotd 2
 
-We propuse a new methot for down complexity using a middle man, this middle man is a commun langue , we going to use english because is a very commun langue for all people. we have to send or text to our middle man will translate to the destiny , this technic will down complexity(amount of models) from ```K*(K-1)``` To ```2K```
+We propose a new method for down complexity using a middle man, this middle man is a commun langue , we going to use English because it is a very commun langue for all people. we have to send or text to our middle man will translate to the destiny , this technic will down complexity(amount of models) from ```K*(K-1)``` To ```2K```
 
 ![Our technic](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/PrimusChat/main/doc/images/3.png)
 
-The Same nodes of the graph are the langues and the edges are the translations in 2 ways, you see the number of edges decrease
+The Same nodes of the graph are the languages and the edges are the translations in 2 ways, you see the number of edges decrease
 
 
 ### License
