@@ -18,21 +18,18 @@ def webTranslate(txt:str,writeIn:str,translateTo:str)->str:
 	translatedTxt = GoogleTranslator(source=writeIn, target=translateTo).translate(txt)
 	return translatedTxt
 
-def chatGPT(msg:str,api_key:str)->str:
+def whisperTranscript(url:str)->str:
 	"""
 	chatGPT(msg,api_key)
 		- msg is mesage to chatgpt
 		- api_key your api key of chat gpt
 	return answer of chatgpt
 	"""
-	import openai
-	openai.api_key = api_key
-	completion = openai.ChatCompletion.create(
-		model="gpt-3.5-turbo",
-		messages=[
-			{"role": "user", "content": msg}
-		])
-	return  completion.choices[0].message.content
+	import whisper
+	model = whisper.load_model("base")
+	result = model.transcribe(url)
+	print(result)
+	return  result
 
 def gptTranslate(txt:str,writeIn:str,translateTo:str,api_key:str,prompt="translate {txt} from {writeIn} to {translateTo}")->str:
 	"""
