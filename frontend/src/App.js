@@ -10,7 +10,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="room/:roomId" element={<Room />} />
-        {/* <Route path="test" element={<AudioInputFunctionality />} /> */}
+        <Route path="test" element={<AudioInputFunctionality />} />
       </Route>
       {/* Catch call*/}
       <Route path="*" element={<Navigate to="/" replace />} />

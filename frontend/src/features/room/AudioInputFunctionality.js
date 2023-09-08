@@ -46,7 +46,7 @@ const AudioInputFunctionality = () => {
     const data = new FormData();
     data.append("file", file);
     await axios
-      .post("/api/receive_data", data, {
+      .post("/api/transcript_data", data, {
         headers: {
           "Content-Type": "multipart/form_data",
         },
