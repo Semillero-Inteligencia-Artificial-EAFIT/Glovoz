@@ -24,7 +24,7 @@ class webpage():
   @app.route("/api/transcript_data", methods=["POST"])
   def transcript_data():
     #audio input functionality
-      file = request.files
+      file = request.files["file"]
       print(file)
       # with open("message.mp3","wb") as aud:
       #   aud_stream = file.read()

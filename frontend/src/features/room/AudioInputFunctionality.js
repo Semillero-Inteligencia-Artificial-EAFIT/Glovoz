@@ -1,59 +1,64 @@
 import axios from "axios";
 import { useState } from "react";
-const MicRecorder = require("mic-recorder-to-mp3");
 
-const recorder = new MicRecorder({
-  bitRate: 128,
-});
+let chunks = [];
+let recorder = null;
+
 const AudioInputFunctionality = () => {
   const [isRecording, setIsRecording] = useState(false);
   const grabar = () => {
     if (!isRecording) {
-      console.log("start");
-      recorder
-        .start()
-        .then(() => {
-          setIsRecording(true);
-        })
-        .catch((e) => {
-          console.error(e);
-        });
+      startRecording();
     } else {
-      console.log("stop");
-      recorder
-        .stop()
-        .getMp3()
-        .then(async ([buffer, blob]) => {
-          // do what ever you want with buffer and blob
-          // Example: Create a mp3 file and play
-          const file = new File(buffer, "message.mp3", {
-            type: blob.type,
-            lastModified: Date.now(),
-          });
-          const audioURL = URL.createObjectURL(file);
-          sendRecording(audioURL);
-          //   console.log("Base audio", baseAudio);
-          setIsRecording(false);
-        })
-        .catch((e) => {
-          alert("We could not retrieve your message");
-          console.log(e);
-        });
+      stopRecording();
     }
   };
 
-  const sendRecording = async (file) => {
-    const data = new FormData();
-    data.append("file", file);
-    await axios
-      .post("/api/transcript_data", data, {
-        headers: {
-          "Content-Type": "multipart/form_data",
-        },
+  const startRecording = () => {
+    console.log("start");
+    let constraints = {
+      audio: true,
+      video: false,
+    };
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then(function (stream) {
+        recorder = new MediaRecorder(stream);
+
+        recorder.ondataavailable = (e) => {
+          chunks.push(e.data);
+        };
+
+        recorder.start();
+        console.log("Recording started");
+        setIsRecording(true);
       })
-      .then((res) => {
-        console.log(res);
+      .catch(function (err) {
+        console.log(err);
       });
+  };
+
+  const stopRecording = () => {
+    console.log("stopButton clicked");
+
+    recorder.stop(); //stop microphone access
+
+    const blob = new Blob(chunks, { type: "audio/ogg" });
+    sendRecording(blob);
+    chunks = [];
+    setIsRecording(false);
+  };
+
+  const sendRecording = async (blob) => {
+    let data = new FormData();
+    data.append("file", blob);
+
+    const config = {
+      headers: { "content-type": "multipart/form-data" },
+    };
+    await axios.post("/api/transcript_data", data, config).then((res) => {
+      console.log(res);
+    });
   };
 
   return <button onClick={grabar}>grabar o parar</button>;
