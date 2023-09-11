@@ -3,8 +3,14 @@
 #PrimusChat - by MLEAFIT
 from flask import Flask, render_template, request, flash, redirect ,session,jsonify
 from core.tools.tools import *
+import soundfile
+import io
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+UPLOAD_FOLDER = "./"
+app.config["UPLOAD_FOLDER"]=UPLOAD_FOLDER
 class webpage():
   @app.route("/")
   def index():
@@ -26,10 +32,20 @@ class webpage():
     #audio input functionality
       file = request.files["file"]
       print(file)
-      # with open("message.mp3","wb") as aud:
-      #   aud_stream = file.read()
-      #   aud.write(aud_stream)
-      # transcript = whisperTranscript("message.mp3")
-      # print(transcript)
+      filepath = os.path.join(app.config["UPLOAD_FOLDER"], "audio")
+      file.save(filepath)
+      file.seek(0)
+      data, samplerate = soundfile.read(file)
+      with io.BytesIO() as fio:
+        soundfile.write(fio,
+                        data,
+                        samplerate=samplerate,
+                        subtype="PCM_16",
+                        format="wav")
+        data = fio.getvalue()
+      # with open("audio.wav", "rb") as fp:
+      #   audio = fp.read()
+      # transcript = whisperTranscript("audio")
+      # print(data)
       return {"message": "ok"}
 

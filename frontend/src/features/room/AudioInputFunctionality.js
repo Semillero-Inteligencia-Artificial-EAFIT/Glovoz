@@ -1,13 +1,26 @@
 import axios from "axios";
 import { useState } from "react";
+import MicRecorder from "mic-recorder-to-mp3";
 
-let chunks = [];
-let recorder = null;
+const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
 const AudioInputFunctionality = () => {
   const [isRecording, setIsRecording] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [blob, setBlob] = useState({ blobURL: "" });
   const grabar = () => {
     if (!isRecording) {
+      navigator.getUserMedia(
+        { audio: true },
+        () => {
+          console.log("Permission Granted");
+          setIsBlocked(false);
+        },
+        () => {
+          console.log("Permission Denied");
+          setIsBlocked(true);
+        }
+      );
       startRecording();
     } else {
       stopRecording();
@@ -15,43 +28,31 @@ const AudioInputFunctionality = () => {
   };
 
   const startRecording = () => {
-    console.log("start");
-    let constraints = {
-      audio: true,
-      video: false,
-    };
-    navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then(function (stream) {
-        recorder = new MediaRecorder(stream);
-
-        recorder.ondataavailable = (e) => {
-          chunks.push(e.data);
-        };
-
-        recorder.start();
-        console.log("Recording started");
-        setIsRecording(true);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+    if (isBlocked) {
+      console.log("Permission Denied");
+    } else {
+      Mp3Recorder.start()
+        .then(() => {
+          setIsRecording(true);
+        })
+        .catch((e) => console.error(e));
+    }
   };
 
   const stopRecording = () => {
-    console.log("stopButton clicked");
-
-    recorder.stop(); //stop microphone access
-
-    const blob = new Blob(chunks, { type: "audio/ogg" });
-    sendRecording(blob);
-    chunks = [];
-    setIsRecording(false);
+    Mp3Recorder.stop()
+      .getMp3()
+      .then(([buffer, blob]) => {
+        const blobURL = URL.createObjectURL(blob);
+        setBlob({ blob, blobURL });
+        setIsRecording(false);
+      })
+      .catch((e) => console.log(e));
   };
 
-  const sendRecording = async (blob) => {
+  const sendRecording = async () => {
     let data = new FormData();
-    data.append("file", blob);
+    data.append("file", blob.blob);
 
     const config = {
       headers: { "content-type": "multipart/form-data" },
@@ -61,7 +62,13 @@ const AudioInputFunctionality = () => {
     });
   };
 
-  return <button onClick={grabar}>grabar o parar</button>;
+  return (
+    <>
+      <audio src={blob.blobURL} controls />
+      <button onClick={grabar}>grabar o parar</button>
+      <button onClick={sendRecording}>enviar</button>
+    </>
+  );
 };
 
 export default AudioInputFunctionality;
