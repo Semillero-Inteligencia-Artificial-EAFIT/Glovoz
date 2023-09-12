@@ -50,7 +50,7 @@ const RoomMessages = (props) => {
     const lastMessageTime =
       new Date().getTime() / 1000 - lastMessage?.createdAt?.seconds;
     console.log({ lastMessage, lastMessageTime });
-    if (lastMessageTime < 6) {
+    if (lastMessageTime < 10) {
       if (lastMessage?.lang !== lang && !lastMessage[lang] && !translated) {
         try {
           const data = {
