@@ -8,7 +8,7 @@ import {
   LogoContainer,
   ProfilePicture,
   StyledHeader,
-  Title,
+  Image,
   UserContainer,
 } from "./styles/StyledHeader";
 
@@ -36,8 +36,7 @@ export default function Header() {
     <HeaderContainer>
       <StyledHeader>
         <LogoContainer onClick={() => setGoToHome(true)}>
-          <Title>Glovoz</Title>
-          <Title>🌎🦾🔥</Title>
+          <Image src={require("./icons/Glovoz png 1.png")} alt="Glovoz" />
         </LogoContainer>
         <UserContainer>
           {userContent}

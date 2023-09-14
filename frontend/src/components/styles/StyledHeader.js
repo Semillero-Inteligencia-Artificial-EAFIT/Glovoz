@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 // CSS usando styled-components
 export const HeaderContainer = styled.header`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background: #0b153c;
 `;
 
 export const StyledHeader = styled.header`
@@ -17,8 +18,8 @@ export const StyledHeader = styled.header`
 export const LogoContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 5px;
-  // cursor: pointer;
+  max-height: 45px;
+  overflow: hidden;
 `;
 
 export const UserContainer = styled.div`
@@ -28,22 +29,19 @@ export const UserContainer = styled.div`
   gap: 5px;
 `;
 
-export const Title = styled.h1`
-  font-size: 2rem;
-  margin: 0;
-  @media screen and (max-width: 320px) {
-    font-size: 1.7rem;
-  }
+export const Image = styled.img`
+  margin-top: 20px;
+  max-width: 300px;
 `;
 
 export const ProfilePicture = styled.img`
   width: 45px;
-  border-radius: 100%;
-  border: 2px solid #ddd;
+  border-radius: 50%;
+  border: 3px solid #0b153c;
   transition: 0.3s ease-in;
   cursor: pointer;
   &:hover {
-    border: 2px solid gray;
+    border: 3px solid gray;
   }
 `;
 
