@@ -49,32 +49,35 @@ const RoomMessages = (props) => {
     const lastMessage = data[data.length - 1];
     const lastMessageTime =
       new Date().getTime() / 1000 - lastMessage?.createdAt?.seconds;
-    console.log({ lastMessage, lastMessageTime });
-    if (lastMessageTime < 10) {
-      if (lastMessage?.lang !== lang && !lastMessage[lang] && !translated) {
-        try {
-          const data = {
-            text: lastMessage.text,
-            lang: lastMessage.lang,
-            targetLang: lang,
+    // console.log({ lastMessage, lastMessageTime });
+    if (lastMessageTime > 10) return;
+
+    if (lastMessage?.lang !== lang && !lastMessage[lang] && !translated) {
+      const u = new SpeechSynthesisUtterance(lastMessage.text);
+      u.lang = lang;
+      synth.speak(u);
+      return;
+    }
+
+    if (lastMessage.lang === lang && lastMessage.uid !== user.uid) {
+      try {
+        const data = {
+          text: lastMessage.text,
+          lang: lastMessage.lang,
+          targetLang: lang,
+        };
+        await axios.post("/api/receive_data", data).then((res) => {
+          const newText = {
+            [lang]: res.data.message,
           };
-          await axios.post("/api/receive_data", data).then((res) => {
-            const newText = {
-              [lang]: res.data.message,
-            };
-            const u = new SpeechSynthesisUtterance(res.data.message);
-            u.lang = lang;
-            synth.speak(u);
-            updateMessage({ roomId, messageId: lastMessage.id, data: newText });
-            setTranslated(true);
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      } else if (lastMessage.lang === lang && lastMessage.uid !== user.uid) {
-        const u = new SpeechSynthesisUtterance(lastMessage.text);
-        u.lang = lang;
-        synth.speak(u);
+          const u = new SpeechSynthesisUtterance(res.data.message);
+          u.lang = lang;
+          synth.speak(u);
+          updateMessage({ roomId, messageId: lastMessage.id, data: newText });
+          setTranslated(true);
+        });
+      } catch (error) {
+        console.log(error);
       }
     }
   };

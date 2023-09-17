@@ -39,23 +39,7 @@ const EnterRoomForm = (props) => {
 
   const joinRoom = async () => {
     refetch();
-    if (data) {
-      if (data === "wrong") {
-        alert("Wrong password :(");
-        return;
-      } else {
-        if (!data.members.includes(user.uid)) {
-          const messageData = {
-            text: `${user.displayName} has joined the chat!`,
-            lang: "en",
-            uid: "chatBot",
-          };
-          await addMessage({ roomId, data: messageData });
-          await addMemberByRoomId({ roomId, uid: user.uid });
-        }
-        navigateToRoom();
-      }
-    } else {
+    if (!data) {
       const messageData = {
         text: `${user.displayName} has created the room!`,
         lang: "en",
@@ -64,7 +48,24 @@ const EnterRoomForm = (props) => {
       await addRoom({ roomId, password: roomPassword, uid: user.uid });
       await addMessage({ roomId, data: messageData });
       navigateToRoom();
+      return;
     }
+
+    if (data === "wrong") {
+      alert("Wrong password :(");
+      return;
+    }
+
+    if (!data.members.includes(user.uid)) {
+      const messageData = {
+        text: `${user.displayName} has joined the chat!`,
+        lang: "en",
+        uid: "chatBot",
+      };
+      await addMessage({ roomId, data: messageData });
+      await addMemberByRoomId({ roomId, uid: user.uid });
+    }
+    navigateToRoom();
   };
 
   return (
