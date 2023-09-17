@@ -1,4 +1,4 @@
-# PrimusChat (in process)
+# Glovoz (in process)
 
 This project is a voice-to-voice translator app built using React, Chrome plugins, TensorFlow, and Flask. The app enables users to communicate in different languages by converting spoken language into text, translating it to the target language, and then converting it back to speech for the receiver. By leveraging TensorFlow for language models and Flask for the backend, the app aims to provide efficient and accurate translations.
 
@@ -21,7 +21,7 @@ This project is a voice-to-voice translator app built using React, Chrome plugin
 ### Installing
 **Download repositories**
 
-    git clone https://github.com/MLEAFIT/PrimusChat.git
+    git clone https://github.com/MLEAFIT/Glovoz.git
 
 ### Run 
 
