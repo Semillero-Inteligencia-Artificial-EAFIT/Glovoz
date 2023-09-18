@@ -52,14 +52,14 @@ const RoomMessages = (props) => {
     // console.log({ lastMessage, lastMessageTime });
     if (lastMessageTime > 10) return;
 
-    if (lastMessage?.lang !== lang && !lastMessage[lang] && !translated) {
+    if (lastMessage.lang === lang && lastMessage.uid !== user.uid) {
       const u = new SpeechSynthesisUtterance(lastMessage.text);
       u.lang = lang;
       synth.speak(u);
       return;
     }
 
-    if (lastMessage.lang === lang && lastMessage.uid !== user.uid) {
+    if (lastMessage?.lang !== lang && !lastMessage[lang] && !translated) {
       try {
         const data = {
           text: lastMessage.text,

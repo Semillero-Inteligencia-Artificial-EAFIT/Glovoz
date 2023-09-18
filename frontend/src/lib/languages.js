@@ -1,14 +1,14 @@
 export const languages = {
-  "English 🇬🇧": "en-GB",
+  // "English 🇬🇧": "en-GB",
   "English 🇺🇲": "en-US",
-  "English 🇨🇦": "en-CA",
-  "Español 🇪🇸": "es-ES",
+  // "English 🇨🇦": "en-CA",
+  // "Español 🇪🇸": "es-ES",
   "Español 🇨🇴": "es-CO",
-  "Español 🇲🇽": "es-MX",
+  // "Español 🇲🇽": "es-MX",
   "Deutsch 🇩🇪": "de",
   "Français 🇫🇷": "fr",
   "Português 🇧🇷": "pt-BR",
-  "Português 🇵🇹": "pt-PT",
+  // "Português 🇵🇹": "pt-PT",
   "Русский 🇷🇺": "ru",
 };
 
