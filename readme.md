@@ -24,18 +24,25 @@ This project is a voice-to-voice translator app built using React, Chrome plugin
     git clone https://github.com/MLEAFIT/Glovoz.git
 
 ### Run 
+**Install seamlessM4T**
+please see:[https://github.com/facebookresearch/seamless_communication/tree/main#installation](https://github.com/facebookresearch/seamless_communication/tree/main#installation)
 
-**install flask :**
+    
+    git clone https://github.com/facebookresearch/seamless_communication.git
+    cd seamless_communication
+    pip install .
 
-    cd PrimusChat/backend
+**Install flask :**
+
+    cd Glovoz/backend
     pip install -r requieriments.txt
 
 **Execute python backend in another terminal:**
-    python PrimusChat.py
+    python Glovoz.py
 
 **install react :**
 
-    cd PrimusChat/frontend
+    cd Glovoz/frontend
     npm install
 
 **Execute javascript frontend in another terminal:**
@@ -67,9 +74,9 @@ We think to make a model for each language translation, like
 
 is very computationally very expensive because it need ```K*(K-1)``` models for K language
 
-![Language models complexity](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/PrimusChat/main/doc/images/1.png)
+![Language models complexity](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/Glovoz/main/doc/images/1.png)
 
-![Our math intuition](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/PrimusChat/main/doc/images/2.png)
+![Our math intuition](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/Glovoz/main/doc/images/2.png)
 
 The nodes of the graph are the languages and the edges are the translations in 2 ways
 
@@ -77,7 +84,7 @@ The nodes of the graph are the languages and the edges are the translations in 2
 
 We propose a new method for down complexity using a middle man, this middle man is a commun langue , we going to use English because it is a very commun langue for all people. we have to send or text to our middle man will translate to the destiny , this technic will down complexity(amount of models) from ```K*(K-1)``` To ```2K```
 
-![Our technic](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/PrimusChat/main/doc/images/3.png)
+![Our technic](https://raw.githubusercontent.com/Semillero-Inteligencia-Artificial-EAFIT/Glovoz/main/doc/images/3.png)
 
 The Same nodes of the graph are the languages and the edges are the translations in 2 ways, you see the number of edges decrease
 

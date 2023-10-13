@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
-#PrimusChat - by MLEAFIT
+#Glovoz - by MLEAFIT
 from flask import Flask, render_template, request, flash, redirect ,session,jsonify
 from core.tools.tools import *
 import io
