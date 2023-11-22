@@ -23,7 +23,11 @@ export default function Header() {
   const changeActive = () => setActive((prev) => !prev);
 
   const userContent = user && (
-    <ProfilePicture alt="profile" src={user?.photoURL} onClick={changeActive} />
+    <ProfilePicture
+      alt="profile"
+      src={user?.photoURL ? user.photoURL : require("./icons/user.png")}
+      onClick={changeActive}
+    />
   );
 
   const dropDown = active && (

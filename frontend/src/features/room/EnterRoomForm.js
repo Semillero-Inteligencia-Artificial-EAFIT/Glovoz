@@ -70,20 +70,15 @@ const EnterRoomForm = (props) => {
 
   return (
     <RoomForm>
-      <Input placeholder="Enter room id" value={roomId} onChange={changeId} />
+      <Input placeholder="ID de sala" value={roomId} onChange={changeId} />
       <Input
-        placeholder="Enter room id"
+        placeholder="Contraseña"
         value={roomPassword}
         onChange={changePassword}
       />
-      <OptimusContainer>
-        <AnimationImage src={optimusImage} alt="optimus" animate={animate} />
-        <ButtonContainer>
-          <Button onClick={joinRoom} $mode="primary" onHover={changeAnimate}>
-            Join Room
-          </Button>
-        </ButtonContainer>
-      </OptimusContainer>
+      <Button onClick={joinRoom} $mode="primary" onHover={changeAnimate}>
+        Crear / Unirse
+      </Button>
     </RoomForm>
   );
 };

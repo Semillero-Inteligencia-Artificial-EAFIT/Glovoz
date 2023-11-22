@@ -9,9 +9,10 @@ const EnterRoom = (props) => {
 
   return (
     <Container>
-      <Title>Bienvenid@, {formattedUser}</Title>
+      <Title>Bienvenid@ {formattedUser}</Title>
       <SubTitle>¡En Glovoz, el lenguaje no es una barrera!</SubTitle>
       <EnterRoomForm user={user} />
+      <p>Ingresa el ID y contraseña de una sala, si no existe se creará.</p>
     </Container>
   );
 };

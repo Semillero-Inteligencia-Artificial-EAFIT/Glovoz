@@ -14,7 +14,6 @@ export const RoomForm = styled.div`
   padding: 0 20px;
   @media screen and (min-width: 768px) {
     margin-top: 50px;
-    margin-right: 100px;
     flex-direction: row;
     text-align: left;
     gap: 5px;
@@ -68,6 +67,7 @@ export const Title = styled.h1`
   padding: 10px;
   text-align: center;
   margin-bottom: 0;
+  color: #0b153c;
   @media screen and (min-width: 768px) {
     font-size: 3.5rem;
   }
