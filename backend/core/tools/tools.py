@@ -1,34 +1,58 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 #Glovoz - by MLEAFIT
-try:
-	def webTranslate(text,source,destiny):
-		language_code_to_name = {"de":"deu","en":"eng","es":"spa","ru":"rus","fr":"fra","pt":"pot"}
-		from seamless_communication.models.inference import Translator
-		import torch 
-		translator = Translator(
-				"seamlessM4T_large",
-				"vocoder_36langs",
-				torch.device("cuda:0")
-		)
-		translated_text, _, _ = translator.predict(text, "t2tt", language_code_to_name[destiny], src_lang=language_code_to_name[source])
-		return translated_text
-except:
-	def webTranslate(txt:str,writeIn:str,translateTo:str)->str:
-		"""
-		webTranslate(txt,writeIn,translateTo )
-		  - txt			  -text to trasnlate
-		  - writeIn		  -in which language is it written
-		  - translateTo	  -language to be translated
-		rember language prefix
-		en -> english
-		es -> spanish 
-		...
-		return text translated
-		"""
-		from deep_translator import GoogleTranslator 
-		translatedTxt = GoogleTranslator(source=writeIn, target=translateTo).translate(txt)
-		return translatedTxt
+
+def webTranslate(text,source_lang,target_lang):
+
+    """
+    Translates text from source language to destiny language using SeamlessM4T.
+    
+    Args:
+        text (str): The text to translate.
+        source (str): The source language code (e.g., 'en', 'de').
+        target_lang (str): The target language code (e.g., 'es', 'fr').
+
+    Returns:
+        str: Translated text.
+    """
+    # Define language mappings
+    language_code_to_name = {
+        "de": "deu",
+        "en": "eng",
+        "es": "spa",
+        "ru": "rus",
+        "fr": "fra",
+        "pt": "pot"
+    }
+
+    try:
+        # Import required modules
+        from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
+        model_name="facebook/m2m100_418M"
+        tokenizer = M2M100Tokenizer.from_pretrained(model_name)
+        model = M2M100ForConditionalGeneration.from_pretrained(model_name)
+
+        # Set source language
+        tokenizer.src_lang = source_lang
+
+        # Tokenize the input text
+        encoded =tokenizer(text, return_tensors="pt")
+
+        # Generate translation
+        generated_tokens = model.generate(
+            **encoded, forced_bos_token_id=tokenizer.get_lang_id(target_lang)
+        )
+
+        # Decode the output
+        translated_text = tokenizer.decode(generated_tokens[0], skip_special_tokens=True)
+        return translated_text
+    except ImportError as e:
+        return f"Module import error: {e}"
+
+    except Exception as e:
+        return f"An error occurred: {e}"
+
+
 
 def whisperTranscript(url:str)->str:
 	"""
@@ -58,3 +82,4 @@ def gptTranslate(txt:str,writeIn:str,translateTo:str,api_key:str,prompt="transla
 	return text translated
 	"""
 	return chatGPT(prompt.format(txt=txt,writeIn=writeIn,translateTo=translateTo),api_key)
+#print(webTranslate("hola","es","de"))

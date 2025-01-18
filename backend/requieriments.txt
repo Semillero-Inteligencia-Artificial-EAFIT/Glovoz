@@ -1,2 +1,3 @@
 flask
 deep_translator 
+transformers[sentencepiece]

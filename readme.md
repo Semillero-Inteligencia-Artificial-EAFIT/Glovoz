@@ -24,20 +24,14 @@ This project is a voice-to-voice translator app built using React, Chrome plugin
     git clone https://github.com/MLEAFIT/Glovoz.git
 
 ### Run 
-**Install seamlessM4T**
-please see:[https://github.com/facebookresearch/seamless_communication/tree/main#installation](https://github.com/facebookresearch/seamless_communication/tree/main#installation)
 
-    
-    git clone https://github.com/facebookresearch/seamless_communication.git
-    cd seamless_communication
-    pip install .
-
-**Install flask :**
+**Install requieriments:**
 
     cd Glovoz/backend
     pip install -r requieriments.txt
 
 **Execute python backend in another terminal:**
+    
     python Glovoz.py
 
 **install react :**
@@ -46,6 +40,7 @@ please see:[https://github.com/facebookresearch/seamless_communication/tree/main
     npm install
 
 **Execute javascript frontend in another terminal:**
+    
     npm start run dev
 
 
